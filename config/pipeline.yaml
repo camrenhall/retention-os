@@ -1,0 +1,52 @@
+# config/pipeline.yaml
+pipeline:
+  name: "retention_os_ingestion"
+  version: "1.0"
+  logging:
+    level: "INFO"
+    format: "structured"
+    output: "logs/pipeline.log"
+
+crm:
+  type: "boulevard"
+  config_file: "config/crm_adapters/boulevard.yaml"
+
+processing:
+  entity_types:
+    - clinic
+    - patient
+    - provider
+    - service
+    - package
+    - package_component
+    - appointment
+    - appointment_line
+    - payment
+    - patient_package
+    - outreach_message
+    - retail_sale
+    - retail_sale_line
+  
+  processing_order:
+    - clinic
+    - provider
+    - service
+    - package
+    - package_component
+    - patient
+    - appointment
+    - appointment_line
+    - payment
+    - patient_package
+    - outreach_message
+    - retail_sale
+    - retail_sale_line
+
+data_dictionary:
+  path: "data/dictionary/master_dictionary.yaml"
+  auto_update: true
+
+output:
+  format: "json"
+  compress: false
+  path: "data/processed/canonical/"

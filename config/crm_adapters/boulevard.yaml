@@ -1,0 +1,149 @@
+# config/crm_adapters/boulevard.yaml
+boulevard:
+  file_mappings:
+    clinic: "location_records.csv"
+    patient: "client_records.csv"
+    provider: "staff_records.csv"
+    service: "service_records.csv"
+    package: "package_sales.csv"
+    appointment: "appointment_service_records.csv"
+    payment: "payments_and_refunds.csv"
+    marketing: "marketing_campaign_performance.csv"
+    marketing_generated_appointments: "marketing_generated_appointments.csv"
+    client_sales: "client_sales.csv"
+    discounts: "discount_sales.csv"
+    product_sales: "product_sales.csv"
+    location_retention: "location_retention.csv"
+    discounts_and_offers: "discounts_and_offers.csv"
+    membership_sales: "membership_sales.csv"
+    membership_summary: "membership_summary.csv"
+    sales_breakdown: "sales_breakdown.csv"
+    schedule_records: "schedule_records.csv"
+    service_sales: "service_sales.csv"
+    staff_performance: "staff_performance.csv"
+    staff_retention: "staff_retention.csv"
+    referral_sources_by_client: "referral_sources_by_client.csv"
+    voucher_redemptions: "voucher_redemptions.csv"
+
+
+  field_mappings:
+    clinic:
+      source_clinic_id: "LocationRecord id"
+      source_id: "External Id"
+      name: "Location Name"
+      address_state: "Address State"
+      address_city: "Address City"
+    
+    patient:
+      source_patient_id: "ClientRecord id"
+      source_id: "External Id"
+      first_name: "First Name"
+      last_name: "Last Name"
+      email: "Email Address"
+      mobile_phone: "Mobile Phone"
+      home_phone: "Home Phone"
+      work_phone: "Work Phone"
+      address_city: "Address City"
+      address_state: "Address State"
+      address_zip: "Address Zip"
+      address_line_one: "Address Line One"
+      address_line_two: "Address Line Two"
+      date_of_birth: "Birthdate"
+      referral_source: "Referral Source Name"
+      sms_marketing_enabled: "SMS Marketing Enabled"
+      email_marketing_enabled: "Email Marketing Enabled"
+      created_at: "Created At (Utc)"
+    
+    provider:
+      source_provider_id: "StaffRecord id"
+      source_id: "External Id"
+      first_name: "First Name"
+      last_name: "Last Name"
+      email: "Email Address"
+      mobile_phone: "Mobile Phone"
+      role_id: "Role Id"
+      role_name: "Role Name"
+    
+    service:
+      source_service_id: "ServiceRecord id"
+      source_id: "External Id"
+      name: "Service Name"
+      category: "Category Name"
+      category_id: "Category Id"
+      active: "Is Active"
+      base_price: "Default Price"
+      
+    package:
+      source_package_id: "Sale package_name"
+      name: "Sale package_name"
+      list_price: "Gross Package Sales"
+      
+    appointment:
+      source_appointment_id: "Appointment Id"
+      source_id: "AppointmentServiceRecord id"
+      client_id: "Client Id"
+      staff_id: "Staff Id"
+      service_id: "Service Id"
+      start_on: "Start On"
+      start_at: "Start At"
+      end_at: "End At"
+      cancellation_reason: "Cancellation Reason"
+      cancelled_at: "Cancelled At (Utc)"
+      appointment_state: "Appointment State"
+      staff_requested: "Staff Requested"
+      location_id: "Location Id"
+    
+    payment:
+      source_payment_id: "Transaction id"
+      source_id: "Transaction id"
+      created_on: "Created On"
+      amount: "Transaction Amount"
+      payment_method: "Payment Method"
+      note: "Note"
+      client_name: "Client Name"
+      location_name: "Location Name"
+      order_id: "Order #"
+    
+    outreach_message:
+      campaign_type: "MarketingCommunications campaign_type_name"
+      location_name: "MarketingCommunications location_name"
+      recipient_count: "Recipient Count"
+      emails_sent: "Emails Sent"
+      texts_sent: "Texts Sent"
+      clicks: "Clicks"
+      click_percent: "Click %"
+      appointments_booked: "Appointments Booked"
+      appointments_completed: "Appointments Completed"
+
+  type_conversions:
+    patient.mobile_phone: "string"
+    patient.date_of_birth:
+      format: "date"
+      pattern: "%Y-%m-%d"
+    patient.sms_marketing_enabled: "boolean"
+    patient.email_marketing_enabled: "boolean"
+    
+    provider.mobile_phone: "string"
+    
+    service.base_price: "float"
+    service.active: "boolean"
+    
+    appointment.start_at:
+      format: "datetime"
+      pattern: "%H:%M:%S"
+    appointment.end_at:
+      format: "datetime"
+      pattern: "%H:%M:%S"
+    appointment.start_on:
+      format: "date"
+      pattern: "%Y-%m-%d"
+    appointment.cancelled_at:
+      format: "datetime"
+      pattern: "%Y-%m-%d %H:%M:%S"
+    
+    payment.amount: "float"
+    payment.created_on:
+      format: "datetime"
+      pattern: "%Y-%m-%d %H:%M:%S"
+    
+    package.list_price: "float"
