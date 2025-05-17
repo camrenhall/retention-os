@@ -5,7 +5,6 @@ from retention_os.models.canonical_model import (
     BaseCanonicalModel,
     Business,
     Client,
-    Professional,
     Service,
     Package,
     PackageComponent,
@@ -13,9 +12,6 @@ from retention_os.models.canonical_model import (
     AppointmentLine,
     Payment,
     ClientPackage,
-    OutreachMessage,
-    ProductSale,
-    ProductSaleLine,
     CanonicalDataModel
 )
 
@@ -23,7 +19,6 @@ __all__ = [
     'BaseCanonicalModel',
     'Business',
     'Client',
-    'Professional',
     'Service',
     'Package',
     'PackageComponent',
@@ -31,8 +26,5 @@ __all__ = [
     'AppointmentLine',
     'Payment',
     'ClientPackage',
-    'OutreachMessage',
-    'ProductSale',
-    'ProductSaleLine',
     'CanonicalDataModel'
 ]

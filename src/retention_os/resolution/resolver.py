@@ -18,17 +18,13 @@ class EntityResolver:
         self.entities = {
             "business": {},
             "client": {},
-            "professional": {},
             "service": {},
             "package": {},
             "package_component": {},
             "appointment": {},
             "appointment_line": {},
             "payment": {},
-            "client_package": {},
-            "outreach_message": {},
-            "product_sale": {},
-            "product_sale_line": {}
+            "client_package": {}
         }
         self.source_to_canonical = {
             entity_type: {} for entity_type in self.entities.keys()
@@ -56,7 +52,6 @@ class EntityResolver:
         # Process entities in dependency order
         self._resolve_business_entities(dataframes.get("business", pd.DataFrame()))
         self._resolve_client_entities(dataframes.get("client", pd.DataFrame()))
-        self._resolve_professional_entities(dataframes.get("professional", pd.DataFrame()))
         self._resolve_service_entities(dataframes.get("service", pd.DataFrame()))
         self._resolve_package_entities(dataframes.get("package", pd.DataFrame()))
         
@@ -81,15 +76,6 @@ class EntityResolver:
             self._resolve_client_package_entities(dataframes["client_package"])
         else:
             logger.warning("No client_package data available for resolution")
-        
-        self._resolve_outreach_message_entities(dataframes.get("outreach_message", pd.DataFrame()))
-        self._resolve_product_sale_entities(dataframes.get("product_sale", pd.DataFrame()))
-        
-        # Derived entities that require product sales
-        if "product_sale_line" in dataframes and not dataframes["product_sale_line"].empty:
-            self._resolve_product_sale_line_entities(dataframes["product_sale_line"])
-        else:
-            logger.warning("No product_sale_line data available for resolution")
         
         # Count entities by type
         entity_counts = {entity_type: len(entities) for entity_type, entities in self.entities.items()}
@@ -158,11 +144,12 @@ class EntityResolver:
         return canonical_id
     
     def _resolve_business_entities(self, df: pd.DataFrame):
+        """Resolve business entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve business entities."""
+            
         if df.empty:
             # Create a default business if none exists
             business_id = self._generate_id()
@@ -202,11 +189,12 @@ class EntityResolver:
             logger.info("Created default business entity after processing")
     
     def _resolve_client_entities(self, df: pd.DataFrame):
+        """Resolve client entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve client entities."""
+            
         if df.empty:
             logger.warning("No client data available for resolution")
             return
@@ -231,42 +219,13 @@ class EntityResolver:
             else:
                 self._add_entity("client", row_dict)
     
-    def _resolve_professional_entities(self, df: pd.DataFrame):
-        if df is not None and not df.empty:
-            logger.debug(f"Dataframe passed to resolver: {df.shape}")
-            logger.debug(f"Dataframe columns: {list(df.columns)}")
-            logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve professional entities."""
-        if df.empty:
-            logger.warning("No professional data available for resolution")
-            return
-            
-        for _, row in df.iterrows():
-            row_dict = row.to_dict()
-            
-            # Skip entries with null source_id
-            source_id = row_dict.get("source_id")
-            if pd.isna(source_id) or not source_id:
-                continue
-                
-            # Get business ID (use first one if multiple exist)
-            if self.entities["business"]:
-                business_id = next(iter(self.entities["business"].keys()))
-                row_dict["business_id"] = business_id
-            
-            # Use existing entity if available
-            canonical_id = self._get_canonical_id("professional", source_id)
-            if canonical_id:
-                self.entities["professional"][canonical_id].update(row_dict)
-            else:
-                self._add_entity("professional", row_dict)
-    
     def _resolve_service_entities(self, df: pd.DataFrame):
+        """Resolve service entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve service entities."""
+            
         if df.empty:
             logger.warning("No service data available for resolution")
             return
@@ -292,11 +251,12 @@ class EntityResolver:
                 self._add_entity("service", row_dict)
     
     def _resolve_package_entities(self, df: pd.DataFrame):
+        """Resolve package entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve package entities."""
+            
         if df.empty:
             logger.warning("No package data available for resolution")
             return
@@ -322,11 +282,12 @@ class EntityResolver:
                 self._add_entity("package", row_dict)
     
     def _resolve_package_component_entities(self, df: pd.DataFrame):
+        """Resolve package_component entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve package_component entities."""
+            
         if df.empty:
             logger.warning("No package_component data available for resolution")
             return
@@ -364,15 +325,26 @@ class EntityResolver:
                 self._add_entity("package_component", row_dict)
     
     def _resolve_appointment_entities(self, df: pd.DataFrame):
+        """Resolve appointment entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve appointment entities."""
+            
         if df.empty:
             logger.warning("No appointment data available for resolution")
             return
             
+        # Status mapping for validation
+        status_mapping = {
+            "booked": "confirmed",
+            "final": "final",
+            "cancelled": "cancelled", 
+            "arrived": "arrived",
+            "no_show": "no_show",
+            "confirmed": "confirmed"
+        }
+                
         for _, row in df.iterrows():
             row_dict = row.to_dict()
             
@@ -385,9 +357,6 @@ class EntityResolver:
             client_id = row_dict.get("client_id")
             canonical_client_id = self._get_canonical_id("client", client_id) if client_id else None
             
-            professional_id = row_dict.get("staff_id") or row_dict.get("professional_id")
-            canonical_professional_id = self._get_canonical_id("professional", professional_id) if professional_id else None
-            
             # Get business ID (use first one if multiple exist)
             if self.entities["business"]:
                 business_id = next(iter(self.entities["business"].keys()))
@@ -395,9 +364,11 @@ class EntityResolver:
             
             if canonical_client_id:
                 row_dict["client_id"] = canonical_client_id
-                
-            if canonical_professional_id:
-                row_dict["professional_id"] = canonical_professional_id
+            
+            # Map appointment status to valid values
+            if "status" in row_dict and row_dict["status"]:
+                status_val = str(row_dict["status"]).lower()
+                row_dict["status"] = status_mapping.get(status_val, "confirmed")
             
             # Use existing entity if available
             canonical_id = self._get_canonical_id("appointment", source_id)
@@ -407,11 +378,12 @@ class EntityResolver:
                 self._add_entity("appointment", row_dict)
     
     def _resolve_appointment_line_entities(self, df: pd.DataFrame):
+        """Resolve appointment_line entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve appointment_line entities."""
+            
         if df.empty:
             logger.warning("No appointment_line data available for resolution")
             return
@@ -437,13 +409,6 @@ class EntityResolver:
             row_dict["appointment_id"] = canonical_appointment_id
             row_dict["service_id"] = canonical_service_id
             
-            # Resolve professional ID if present
-            professional_id = row_dict.get("professional_id") or row_dict.get("staff_id")
-            if professional_id and not pd.isna(professional_id):
-                canonical_professional_id = self._get_canonical_id("professional", professional_id)
-                if canonical_professional_id:
-                    row_dict["professional_id"] = canonical_professional_id
-            
             # Generate a source_id if not present
             source_id = row_dict.get("source_id") or f"{appointment_id}_{service_id}"
             row_dict["source_id"] = source_id
@@ -456,11 +421,12 @@ class EntityResolver:
                 self._add_entity("appointment_line", row_dict)
     
     def _resolve_payment_entities(self, df: pd.DataFrame):
+        """Resolve payment entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve payment entities."""
+            
         if df.empty:
             logger.warning("No payment data available for resolution")
             return
@@ -469,12 +435,12 @@ class EntityResolver:
             row_dict = row.to_dict()
             
             # Skip entries with null source_id
-            source_id = row_dict.get("source_id")
+            source_id = row_dict.get("source_payment_id") or row_dict.get("source_id")
             if pd.isna(source_id) or not source_id:
                 continue
                 
             # Resolve client ID if present
-            client_name = row_dict.get("client_name")
+            client_name = row_dict.get("client_id") or row_dict.get("client_name")
             if client_name and not pd.isna(client_name):
                 # Find client by name (simplified approach)
                 for client_id, client_data in self.entities["client"].items():
@@ -495,11 +461,12 @@ class EntityResolver:
                 self._add_entity("payment", row_dict)
     
     def _resolve_client_package_entities(self, df: pd.DataFrame):
+        """Resolve client_package entities."""
         if df is not None and not df.empty:
             logger.debug(f"Dataframe passed to resolver: {df.shape}")
             logger.debug(f"Dataframe columns: {list(df.columns)}")
             logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve client_package entities."""
+            
         if df.empty:
             logger.warning("No client_package data available for resolution")
             return
@@ -536,136 +503,6 @@ class EntityResolver:
             else:
                 self._add_entity("client_package", row_dict)
     
-    def _resolve_outreach_message_entities(self, df: pd.DataFrame):
-        if df is not None and not df.empty:
-            logger.debug(f"Dataframe passed to resolver: {df.shape}")
-            logger.debug(f"Dataframe columns: {list(df.columns)}")
-            logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve outreach_message entities."""
-        if df.empty:
-            logger.warning("No outreach_message data available for resolution")
-            return
-            
-        for _, row in df.iterrows():
-            row_dict = row.to_dict()
-            
-            # Skip entries with null source_id (use campaign type as fallback)
-            source_id = row_dict.get("source_id") or row_dict.get("campaign_type")
-            if pd.isna(source_id) or not source_id:
-                continue
-                
-            # Get business ID (use first one if multiple exist)
-            if self.entities["business"]:
-                business_id = next(iter(self.entities["business"].keys()))
-                row_dict["business_id"] = business_id
-            
-            # Use existing entity if available
-            canonical_id = self._get_canonical_id("outreach_message", source_id)
-            if canonical_id:
-                self.entities["outreach_message"][canonical_id].update(row_dict)
-            else:
-                self._add_entity("outreach_message", row_dict)
-    
-    def _resolve_product_sale_entities(self, df: pd.DataFrame):
-        if df is not None and not df.empty:
-            logger.debug(f"Dataframe passed to resolver: {df.shape}")
-            logger.debug(f"Dataframe columns: {list(df.columns)}")
-            logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve product_sale entities."""
-        if df.empty:
-            logger.warning("No product_sale data available for resolution")
-            return
-            
-        for _, row in df.iterrows():
-            row_dict = row.to_dict()
-            
-            # Skip entries with null source_id
-            source_id = row_dict.get("source_id")
-            if pd.isna(source_id) or not source_id:
-                continue
-                
-            # Get business ID (use first one if multiple exist)
-            if self.entities["business"]:
-                business_id = next(iter(self.entities["business"].keys()))
-                row_dict["business_id"] = business_id
-            
-            # Default values for missing required fields
-            if "transaction_date" not in row_dict or pd.isna(row_dict["transaction_date"]):
-                from datetime import datetime
-                row_dict["transaction_date"] = datetime.now()
-                
-            # Convert values to float for calculation
-            net_sales = self._safe_float(row_dict.get("net_sales", 0))
-            sales_tax = self._safe_float(row_dict.get("sales_tax", 0))
-                
-            if "subtotal" not in row_dict or pd.isna(row_dict["subtotal"]):
-                row_dict["subtotal"] = net_sales
-                
-            if "total" not in row_dict or pd.isna(row_dict["total"]):
-                row_dict["total"] = net_sales + sales_tax
-            
-            # Use existing entity if available
-            canonical_id = self._get_canonical_id("product_sale", source_id)
-            if canonical_id:
-                self.entities["product_sale"][canonical_id].update(row_dict)
-            else:
-                self._add_entity("product_sale", row_dict)
-    
-    def _resolve_product_sale_line_entities(self, df: pd.DataFrame):
-        if df is not None and not df.empty:
-            logger.debug(f"Dataframe passed to resolver: {df.shape}")
-            logger.debug(f"Dataframe columns: {list(df.columns)}")
-            logger.debug(f"First row: {df.iloc[0].to_dict() if not df.empty else None}")
-        """Resolve product_sale_line entities."""
-        if df.empty:
-            logger.warning("No product_sale_line data available for resolution")
-            return
-            
-        for _, row in df.iterrows():
-            row_dict = row.to_dict()
-            
-            # Skip entries with null product_sale_id or product_name
-            product_sale_id = row_dict.get("product_sale_id")
-            product_name = row_dict.get("product_name")
-            
-            if pd.isna(product_name) or not product_name:
-                continue
-                
-            # For product_sale_id, use existing or create a placeholder
-            if pd.isna(product_sale_id) or not product_sale_id:
-                # Try to find a matching product sale
-                for ps_id, ps_data in self.entities["product_sale"].items():
-                    if ps_data.get("product_name") == product_name:
-                        product_sale_id = ps_id
-                        break
-                
-                # If still not found, create a placeholder ID
-                if pd.isna(product_sale_id) or not product_sale_id:
-                    product_sale_id = f"placeholder_{self._generate_id()}"
-            
-            row_dict["product_sale_id"] = product_sale_id
-            
-            # Generate a source_id if not present
-            source_id = row_dict.get("source_id") or f"{product_sale_id}_{product_name}"
-            row_dict["source_id"] = source_id
-            
-            # Default values for missing required fields
-            if "quantity" not in row_dict or pd.isna(row_dict["quantity"]):
-                row_dict["quantity"] = 1
-                
-            if "unit_price" not in row_dict or pd.isna(row_dict["unit_price"]):
-                row_dict["unit_price"] = 0
-                
-            if "total_price" not in row_dict or pd.isna(row_dict["total_price"]):
-                row_dict["total_price"] = row_dict["quantity"] * row_dict["unit_price"]
-            
-            # Use existing entity if available
-            canonical_id = self._get_canonical_id("product_sale_line", source_id)
-            if canonical_id:
-                self.entities["product_sale_line"][canonical_id].update(row_dict)
-            else:
-                self._add_entity("product_sale_line", row_dict)
-                
     def _safe_float(self, value):
         """Convert value to float safely."""
         if pd.isna(value):

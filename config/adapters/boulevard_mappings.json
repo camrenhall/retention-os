@@ -2,36 +2,29 @@
     "file_mapping": {
       "business": "Location Records.csv",
       "client": "Client Records.csv",
-      "professional": "Staff Records.csv",
       "service": "Service Records.csv",
       "package": "Package Sales.csv",
       "appointment": "Appointment Service Records.csv",
       "payment": "Payments & Refunds.csv",
-      "product_sale": "Product Sales.csv",
       "client_sale": "Client Sales.csv",
       "service_sale": "Service Sales.csv",
       "detailed_line_item": "Detailed Line Item.csv",
-      "membership": "Membership Summary.csv",
-      "marketing_campaign": "Marketing Campaign Performance.csv",
-      "outreach_message": "Marketing Generated Appointments.csv",
       "discount": "Discounts & Offers.csv",
-      "staff_retention": "Staff Retention.csv",
-      "staff_performance": "Staff Performance.csv",
-      "referral_source": "Referral Sources By Client.csv",
-      "location_retention": "Location Retention.csv",
-      "sales_breakdown": "Sales Breakdown.csv",
-      "discount_sales": "Discount Sales.csv",
-      "membership_sales": "Membership Sales.csv",
-      "schedule": "Schedule Records.csv",
-      "voucher": "Voucher Redemptions.csv"
+      "voucher": "Voucher Redemptions.csv",
+      "schedule": "Schedule Records.csv"
     },
     "entity_mappings": {
       "business": {
         "source_id": "LocationRecord id",
         "external_id": "External Id",
         "name": "Location Name",
+        "street_address": "Address Line One",
         "city": "Address City",
-        "state": "Address State"
+        "state": "Address State",
+        "postal_code": "Address Zip",
+        "country": "US",
+        "phone": "Mobile Phone",
+        "email": "Email Address"
       },
       "client": {
         "source_id": "ClientRecord id",
@@ -40,79 +33,48 @@
         "last_name": "Last Name",
         "email": "Email Address",
         "mobile_phone": "Mobile Phone",
-        "home_phone": "Home Phone",
-        "work_phone": "Work Phone",
         "date_of_birth": "Birthdate",
+        "street_address": "Address Line One",
         "city": "Address City",
         "state": "Address State",
-        "zip": "Address Zip",
-        "address_line1": "Address Line One",
-        "address_line2": "Address Line Two",
-        "referral_source": "Referral Source Name",
-        "sms_marketing_enabled": "SMS Marketing Enabled",
-        "email_marketing_enabled": "Email Marketing Enabled",
+        "postal_code": "Address Zip",
+        "country": "US",
+        "sms_opt_in": "SMS Marketing Enabled",
+        "email_opt_in": "Email Marketing Enabled",
+        "marketing_opt_in": "Email Marketing Enabled",
         "created_at": "Created At (Utc)"
-      },
-      "professional": {
-        "source_id": "StaffRecord id",
-        "external_id": "External Id",
-        "first_name": "First Name",
-        "last_name": "Last Name",
-        "email": "Email Address",
-        "mobile_phone": "Mobile Phone",
-        "role_id": "Role Id",
-        "role_name": "Role Name"
       },
       "service": {
         "source_id": "ServiceRecord id",
         "external_id": "External Id",
         "name": "Service Name",
-        "category_id": "Category Id",
-        "category_name": "Category Name",
+        "category": "Category Name",
         "is_active": "Is Active",
-        "default_price": "Default Price"
+        "base_price": "Default Price"
       },
       "package": {
         "source_id": "Sale package_name",
         "name": "Sale package_name",
-        "location_name": "Location name",
-        "gross_price": "Gross Package Sales",
-        "net_price": "Net Package Sales",
-        "tax": "Package Sales Tax"
-      },
+        "list_price": "Gross Package Sales",
+        "validity_days": "180",
+        "is_active": "Is Active",
+        "is_synthetic": "false"
+        },
       "appointment": {
         "source_id": "AppointmentServiceRecord id",
-        "location_id": "Location Id",
         "appointment_id": "Appointment Id",
         "client_id": "Client Id",
-        "staff_id": "Staff Id",
-        "service_id": "Service Id",
-        "staff_requested": "Staff Requested",
-        "start_date": "Start On",
-        "start_time": "Start At",
-        "end_time": "End At",
+        "scheduled_at": "Start On",
         "cancellation_reason": "Cancellation Reason",
-        "cancelled_at": "Cancelled At (Utc)",
-        "state": "Appointment State"
+        "status": "Appointment State"
       },
       "payment": {
-        "source_id": "Transaction id",
-        "created_on": "Created On",
-        "location_name": "Location Name",
-        "client_name": "Client Name",
-        "order_number": "Order #",
-        "payment_method": "Payment Method",
-        "note": "Note",
-        "amount": "Transaction Amount"
-      },
-      "product_sale": {
-        "source_id": "Sale retail_product_name",
-        "brand_name": "Product brand_name",
-        "product_name": "Sale retail_product_name",
-        "net_sales": "Net Retail Product Sales",
-        "sales_tax": "Retail Product Sales Tax",
-        "quantity_sold": "Product Quantity Sold",
-        "sales_per_order": "Sales per Order"
+        "source_payment_id": "Transaction id",
+        "client_id": "Client Name",
+        "paid_at": "Created On",
+        "method": "Payment Method",
+        "amount": "Transaction Amount",
+        "status": "completed"
       },
       "client_sale": {
         "source_id": "Client name",
@@ -121,20 +83,14 @@
         "net_sales": "Net Sales",
         "service_count": "Service Count",
         "service_sales": "Service Sales",
-        "net_retail_product_sales": "Net Retail Product Sales",
         "net_package_sales": "Net Package Sales",
         "client_age": "Client Age",
         "order_count": "Order Count",
-        "product_sales": "Product Sales",
         "promotional_offers": "Promotional Offers",
-        "requested_appointment_pct": "Requested Appointment %",
         "requested_appointment_count": "Requested Appointment Count",
-        "retail_product_client_count": "Retail Product Client Count",
-        "retail_product_count": "Retail Product Count",
         "sales_per_order": "Sales per Order",
         "appointment_count": "Appointment Count",
-        "client_active": "Client Active",
-        "gift_card_sales": "Gift Card Sales"
+        "client_active": "Client Active"
       },
       "service_sale": {
         "source_id": "Service name",
@@ -150,10 +106,7 @@
         "sale_date": "Sale Date",
         "location_name": "Location Name",
         "client_name": "Client Name",
-        "staff_name": "Staff Name",
         "service_name": "Service Name",
-        "retail_product_name": "Retail Product Name",
-        "membership_name": "Membership Name",
         "package_name": "Package Name",
         "sale_type": "Sale Type",
         "line_item_type": "Line Item Type",
@@ -163,147 +116,17 @@
         "net_sales": "Net Sales",
         "sales_tax": "Sales Tax"
       },
-      "membership": {
-        "source_id": "MembershipSummary membership_name",
-        "name": "MembershipSummary membership_name",
-        "starting_active_memberships": "Starting # Active Memberships",
-        "memberships_activated": "# Memberships Activated",
-        "memberships_paused": "# Memberships Paused",
-        "memberships_past_due": "# Memberships Past Due",
-        "memberships_canceled": "# Memberships Canceled",
-        "memberships_scheduled_cancellation": "# Memberships Scheduled Cancellation",
-        "ending_active_memberships": "Ending # Active Memberships",
-        "new_membership_sales": "New Membership Sales",
-        "recurring_membership_sales": "Recurring Membership Sales",
-        "total_membership_sales": "Total Membership Sales"
-      },
-      "marketing_campaign": {
-        "source_id": "MarketingCommunications campaign_type_name",
-        "campaign_type": "MarketingCommunications campaign_type_name",
-        "location_name": "MarketingCommunications location_name",
-        "recipient_count": "Recipient Count",
-        "emails_sent": "Emails Sent",
-        "bounces": "Bounces",
-        "email_unsubscribes": "Email Unsubscribes",
-        "texts_sent": "Texts Sent",
-        "texts_failed": "Texts Failed",
-        "text_unsubscribes": "Text Unsubscribes",
-        "clicks": "Clicks",
-        "click_rate": "Click %",
-        "appointments_booked": "Appointments Booked",
-        "appointments_completed": "Appointments Completed"
-      },
-      "outreach_message": {
-        "campaign_type": "MarketingCommunications campaign_type_name",
-        "appointments_completed": "Appointments Completed",
-        "appointments_booked": "Appointments Booked",
-        "appointment_sales": "Appointment Sales"
-      },
       "discount": {
         "source_id": "LineItemDiscount description",
-        "operator_name": "LineItemDiscount operator_name",
         "description": "LineItemDiscount description",
         "services_count": "Services Count",
         "client_count": "Client Count",
         "appointment_count": "Appointment Count",
         "discount_total": "Discount Total"
       },
-      "staff_retention": {
-        "source_id": "StaffRetentionExisting staff_name",
-        "staff_name": "StaffRetentionExisting staff_name",
-        "client_count": "Client Count",
-        "thirty_day_revisit": "30-day Business Revisit (%)",
-        "sixty_day_revisit": "60-day Business Revisit (%)",
-        "ninety_day_revisit": "90-day Business Revisit (%)"
-      },
-      "staff_performance": {
-        "source_id": "Staff Name",
-        "role_name": "Staff role_name",
-        "staff_name": "Staff Name",
-        "hours_booked": "Hours Booked",
-        "hours_scheduled": "Hours Scheduled",
-        "utilization_pct": "Utilization %",
-        "prebooked_pct": "Prebooked %",
-        "self_booked_pct": "Self-booked %",
-        "appointment_count": "Appointment Count",
-        "service_count": "Service Count",
-        "service_sales": "Service Sales",
-        "service_sales_per_appointment": "Service Sales per Appointment",
-        "tip_sales": "Tip Sales",
-        "order_client_count": "Order Client Count",
-        "service_client_count": "Service Client Count",
-        "new_client_count": "New Client Count",
-        "returning_client_count": "Returning Client Count"
-      },
-      "referral_source": {
-        "source_id": "Client referral_source_name",
-        "client_name": "Client name",
-        "referral_source_name": "Client referral_source_name",
-        "service_count": "Service Count",
-        "service_sales": "Service Sales",
-        "product_quantity_sold": "Product Quantity Sold",
-        "net_retail_product_sales": "Net Retail Product Sales",
-        "net_total_membership_sales": "Net Total Membership Sales",
-        "net_package_sales": "Net Package Sales",
-        "tip_sales": "Tip Sales",
-        "sales_per_order": "Sales per Order"
-      },
-      "location_retention": {
-        "source_id": "LocationRetentionExisting location_name",
-        "location_name": "LocationRetentionExisting location_name",
-        "client_count": "Client Count",
-        "thirty_day_revisit": "30-day Business Revisit (%)",
-        "sixty_day_revisit": "60-day Business Revisit (%)",
-        "ninety_day_revisit": "90-day Business Revisit (%)"
-      },
-      "sales_breakdown": {
-        "source_id": "Staff Name",
-        "role_name": "Staff role_name",
-        "staff_name": "Staff Name",
-        "hours_scheduled": "Hours Scheduled",
-        "order_client_count": "Order Client Count",
-        "appointment_count": "Appointment Count",
-        "prebooked_pct": "Prebooked %",
-        "service_count": "Service Count",
-        "service_sales": "Service Sales",
-        "product_quantity_sold": "Product Quantity Sold",
-        "net_retail_product_sales": "Net Retail Product Sales",
-        "net_total_membership_sales": "Net Total Membership Sales",
-        "net_package_sales": "Net Package Sales",
-        "retail_product_sales_tax": "Retail Product Sales Tax",
-        "package_sales_tax": "Package Sales Tax",
-        "membership_sales_tax": "Membership Sales Tax",
-        "tip_sales": "Tip Sales",
-        "business_charges": "Business Charges",
-        "sales_per_order": "Sales per Order"
-      },
-      "discount_sales": {
-        "source_id": "Sale discount_name",
-        "discount_name": "Sale discount_name",
-        "staff_name": "Staff Name",
-        "day_of_week": "SaleDate DayOfWeekShort",
-        "order_count": "Order Count",
-        "discount_amount": "Discount Amount"
-      },
-      "membership_sales": {
-        "source_id": "Sale membership_name",
-        "membership_name": "Sale membership_name",
-        "location_name": "Location name",
-        "membership_sales_tax": "Membership Sales Tax",
-        "gross_new_membership_sales": "Gross New Membership Sales",
-        "gross_recurring_membership_sales": "Gross Recurring Membership Sales",
-        "gross_total_membership_sales": "Gross Total Membership Sales",
-        "net_new_membership_sales": "Net New Membership Sales",
-        "net_recurring_membership_sales": "Net Recurring Membership Sales",
-        "net_total_membership_sales": "Net Total Membership Sales",
-        "new_memberships_count": "New Memberships Count",
-        "recurring_membership_count": "Recurring Membership Count",
-        "total_membership_count": "Total Membership Count"
-      },
       "schedule": {
         "source_id": "ScheduleRecord id",
         "location_id": "Location Id",
-        "staff_id": "Staff Id",
         "start_on": "Start On",
         "start_at": "Start At",
         "end_at": "End At"
@@ -326,10 +149,6 @@
       "client_package": {
         "derived": true,
         "sources": ["Client Sales.csv", "Package Sales.csv"]
-      },
-      "product_sale_line": {
-        "derived": true,
-        "sources": ["Product Sales.csv", "Detailed Line Item.csv"]
       }
     },
     "validation_rules": {
@@ -340,34 +159,21 @@
         "last_name": {"type": "string", "required": true}
       },
       "appointment": {
-        "start_date": {"type": "date", "required": true},
-        "state": {"type": "string", "required": true, "allowed_values": ["final", "cancelled", "arrived", "confirmed", "no_show"]}
+        "scheduled_at": {"type": "date", "required": true},
+        "status": {"type": "string", "required": true, "allowed_values": ["final", "cancelled", "arrived", "confirmed", "no_show"]}
       },
       "service": {
         "name": {"type": "string", "required": true},
-        "default_price": {"type": "number", "required": false}
+        "base_price": {"type": "number", "required": false}
       },
       "payment": {
         "amount": {"type": "number", "required": true},
-        "created_on": {"type": "datetime", "required": true}
-      },
-      "professional": {
-        "first_name": {"type": "string", "required": true},
-        "last_name": {"type": "string", "required": true},
-        "email": {"type": "email", "required": false}
-      },
-      "product_sale": {
-        "product_name": {"type": "string", "required": true},
-        "net_sales": {"type": "number", "required": true}
+        "paid_at": {"type": "datetime", "required": true}
       },
       "client_package": {
         "client_id": {"type": "string", "required": true},
         "package_id": {"type": "string", "required": true},
         "purchase_date": {"type": "datetime", "required": true}
-      },
-      "outreach_message": {
-        "type": {"type": "string", "required": false},
-        "campaign_name": {"type": "string", "required": false}
       },
       "business": {
         "name": {"type": "string", "required": true}
