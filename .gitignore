@@ -1,0 +1,11 @@
+data/input/
+data/output/
+logs/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.log
