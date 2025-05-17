@@ -1,0 +1,48 @@
+# Cleaning rules by entity type
+patient:
+  - field: email
+    rule_type: standardize_email
+    parameters:
+      invalid_to_null: true
+  
+  - field: mobile_phone
+    rule_type: standardize_phone
+    parameters:
+      format: e164
+  
+  - field: first_name
+    rule_type: standardize_text
+    parameters:
+      case: title
+  
+  - field: last_name
+    rule_type: standardize_text
+    parameters:
+      case: title
+
+provider:
+  - field: name
+    rule_type: standardize_text
+    parameters:
+      case: title
+
+service:
+  - field: name
+    rule_type: standardize_text
+  
+  - field: category
+    rule_type: normalize_case
+    parameters:
+      case: lower
+
+appointment:
+  - field: status
+    rule_type: normalize_case
+    parameters:
+      case: lower
+
+payment:
+  - field: method
+    rule_type: normalize_case
+    parameters:
+      case: lower

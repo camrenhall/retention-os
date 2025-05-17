@@ -1,0 +1,15 @@
+# config/validation/package.yaml
+rules:
+  name:
+    type: "string"
+    required: true
+    nullable: false
+    min_length: 1
+    error_message: "Package name is required"
+  
+  list_price:
+    type: "number"
+    min_value: 0
+    required: true
+    nullable: false
+    error_message: "List price must be a non-negative number"

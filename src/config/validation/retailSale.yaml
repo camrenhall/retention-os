@@ -1,0 +1,19 @@
+# config/validation/retailSale.yaml
+rules:
+  patient_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Patient ID is required"
+  
+  clinic_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Clinic ID is required"
+  
+  sale_date:
+    type: "datetime"
+    required: true
+    nullable: false
+    error_message: "Sale date is required"

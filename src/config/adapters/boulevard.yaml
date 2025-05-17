@@ -1,0 +1,508 @@
+# Boulevard CRM Adapter Configuration
+
+# Input/Output directories
+input_dir: "data/input"
+output_dir: "data/processed"
+
+# File mappings - define which CSV files correspond to which entity types
+file_mappings:
+  clinic: "Location Records"
+  patient: "Client Records"
+  provider: "Staff Records"
+  service: "Service Records"
+  package: "Package Sales"
+  appointment: "Appointment Service Records"
+  payment: "Payments & Refunds"
+  outreachMessage: "Marketing Campaign Performance"
+  retailSale: "Product Sales"
+  retailSaleLine: "Detailed Line Item"
+  discount: "Discount Sales"
+  discountOffer: "Discounts & Offers"
+  locationRetention: "Location Retention"
+  marketingAppointment: "Marketing Generated Appointments"
+  membership: "Membership Sales"
+  membershipSummary: "Membership Summary"
+  referralSource: "Referral Sources By Client"
+  salesBreakdown: "Sales Breakdown"
+  schedule: "Schedule Records"
+  clientSales: "Client Sales"
+  serviceRecords: "Service Records"
+  serviceSales: "Service Sales"
+  staffPerformance: "Staff Performance"
+  staffRetention: "Staff Retention"
+  voucherRedemption: "Voucher Redemptions"
+
+# Field mappings - transform Boulevard field names to canonical model field names
+field_mappings:
+  clinic:
+    id: "LocationRecord id"
+    source_id: "External Id"
+    name: "Location Name"
+    state: "Address State"
+    city: "Address City"
+
+  patient:
+    source_id: "ClientRecord id"
+    external_id: "External Id"
+    first_name: "First Name"
+    last_name: "Last Name"
+    email: "Email Address"
+    mobile_phone: "Mobile Phone"
+    address_city: "Address City"
+    address_state: "Address State"
+    address_zip: "Address Zip"
+    address_line_one: "Address Line One"
+    address_line_two: "Address Line Two"
+    date_of_birth: "Birthdate"
+    referral_source: "Referral Source Name"
+    sms_marketing_enabled: "SMS Marketing Enabled"
+    email_marketing_enabled: "Email Marketing Enabled"
+    created_at: "Created At (Utc)"
+
+  provider:
+    id: "StaffRecord id"
+    source_id: "External Id"
+    first_name: "First Name"
+    last_name: "Last Name"
+    email: "Email Address"
+    mobile_phone: "Mobile Phone"
+    role_id: "Role Id"
+    role_name: "Role Name"
+
+  service:
+    id: "ServiceRecord id"
+    source_id: "External Id"
+    name: "Service Name"
+    category_id: "Category Id"
+    category_name: "Category Name"
+    is_active: "Is Active"
+    base_price: "Default Price"
+
+  package:
+    package_name: "Sale package_name"
+    gross_package_sales: "Gross Package Sales"
+    net_package_sales: "Net Package Sales"
+
+  appointment:
+    id: "AppointmentServiceRecord id"
+    client_id: "Client Id"
+    staff_id: "Staff Id"
+    location_id: "Location Id"
+    start_on: "Start On"
+    start_at: "Start At"
+    end_at: "End At"
+    cancellation_reason: "Cancellation Reason"
+    cancelled_at: "Cancelled At (Utc)"
+    appointment_state: "Appointment State"
+
+  appointmentLine:
+    appointment_id: "Appointment Id"
+    service_id: "Service Id"
+
+  payment:
+    transaction_id: "Transaction id"
+    created_on: "Created On"
+    client_name: "Client Name"
+    payment_method: "Payment Method"
+    transaction_amount: "Transaction Amount"
+    note: "Note"
+
+  outreachMessage:
+    campaign_type_name: "MarketingCommunications campaign_type_name"
+    location_name: "MarketingCommunications location_name"
+    recipient_count: "Recipient Count"
+    emails_sent: "Emails Sent"
+    texts_sent: "Texts Sent"
+    clicks: "Clicks"
+    appointments_booked: "Appointments Booked"
+    appointments_completed: "Appointments Completed"
+
+  retailSale:
+    product_brand_name: "Product brand_name"
+    retail_product_name: "Sale retail_product_name"
+    net_retail_product_sales: "Net Retail Product Sales"
+    product_quantity_sold: "Product Quantity Sold"
+
+  retailSaleLine:
+    product_name: "Retail Product Name"
+    gross_sales: "Gross Sales"
+    discount_amount: "Discount Amount"
+    refunds: "Refunds" 
+    net_sales: "Net Sales"
+    sales_tax: "Sales Tax"
+
+  # Additional field mappings for all CSV files
+  discount:
+    discount_name: "Sale discount_name"
+    staff_name: "Staff Name"
+    day_of_week: "SaleDate DayOfWeekShort"
+    order_count: "Order Count"
+    discount_amount: "Discount Amount"
+
+  discountOffer:
+    operator_name: "LineItemDiscount operator_name"
+    description: "LineItemDiscount description"
+    services_count: "Services Count"
+    client_count: "Client Count"
+    appointment_count: "Appointment Count"
+    discount_total: "Discount Total"
+
+  locationRetention:
+    location_name: "LocationRetentionExisting location_name"
+    client_count: "Client Count"
+    thirty_day_revisit: "30-day Business Revisit (%)"
+    sixty_day_revisit: "60-day Business Revisit (%)"
+    ninety_day_revisit: "90-day Business Revisit (%)"
+
+  marketingAppointment:
+    campaign_type_name: "MarketingCommunications campaign_type_name"
+    appointments_completed: "Appointments Completed"
+    appointments_booked: "Appointments Booked"
+    appointment_sales: "Appointment Sales"
+
+  membership:
+    name: "Sale membership_name"
+    location_name: "Location name"
+    membership_sales_tax: "Membership Sales Tax"
+    gross_new_membership_sales: "Gross New Membership Sales"
+    gross_recurring_membership_sales: "Gross Recurring Membership Sales"
+    gross_total_membership_sales: "Gross Total Membership Sales"
+    net_new_membership_sales: "Net New Membership Sales"
+    net_recurring_membership_sales: "Net Recurring Membership Sales"
+    net_total_membership_sales: "Net Total Membership Sales"
+    new_memberships_count: "New Memberships Count"
+    recurring_membership_count: "Recurring Membership Count"
+    total_membership_count: "Total Membership Count"
+
+  membershipSummary:
+    membership_name: "MembershipSummary membership_name"
+    starting_active_memberships: "Starting # Active Memberships"
+    memberships_activated: "# Memberships Activated"
+    memberships_paused: "# Memberships Paused"
+    memberships_past_due: "# Memberships Past Due"
+    memberships_canceled: "# Memberships Canceled"
+    memberships_scheduled_cancellation: "# Memberships Scheduled Cancellation"
+    ending_active_memberships: "Ending # Active Memberships"
+    new_membership_sales: "New Membership Sales"
+    recurring_membership_sales: "Recurring Membership Sales"
+    total_membership_sales: "Total Membership Sales"
+
+  referralSource:
+    client_name: "Client name"
+    referral_source_name: "Client referral_source_name"
+    service_count: "Service Count"
+    service_sales: "Service Sales"
+    product_quantity_sold: "Product Quantity Sold"
+    net_retail_product_sales: "Net Retail Product Sales"
+    net_total_membership_sales: "Net Total Membership Sales"
+    net_package_sales: "Net Package Sales"
+    tip_sales: "Tip Sales"
+    sales_per_order: "Sales per Order"
+
+  salesBreakdown:
+    role_name: "Staff role_name"
+    staff_name: "Staff Name"
+    hours_scheduled: "Hours Scheduled"
+    order_client_count: "Order Client Count"
+    appointment_count: "Appointment Count"
+    prebooked_percentage: "Prebooked %"
+    service_count: "Service Count"
+    service_sales: "Service Sales"
+    product_quantity_sold: "Product Quantity Sold"
+    net_retail_product_sales: "Net Retail Product Sales"
+    net_total_membership_sales: "Net Total Membership Sales"
+    net_package_sales: "Net Package Sales"
+    retail_product_sales_tax: "Retail Product Sales Tax"
+    package_sales_tax: "Package Sales Tax"
+    membership_sales_tax: "Membership Sales Tax"
+    tip_sales: "Tip Sales"
+    business_charges: "Business Charges"
+    sales_per_order: "Sales per Order"
+
+  schedule:
+    id: "ScheduleRecord id"
+    location_id: "Location Id"
+    staff_id: "Staff Id"
+    start_on: "Start On"
+    start_at: "Start At"
+    end_at: "End At"
+
+  clientSales:
+    client_name: "Client name"
+    client_mobile: "Client Mobile #"
+    gross_sales: "Gross Sales"
+    net_sales: "Net Sales"
+    service_count: "Service Count"
+    service_sales: "Service Sales"
+    net_retail_product_sales: "Net Retail Product Sales"
+    net_package_sales: "Net Package Sales"
+    client_age: "Client Age"
+    order_count: "Order Count"
+    product_sales: "Product Sales"
+    promotional_offers: "Promotional Offers"
+    retail_product_count: "Retail Product Count"
+    sales_per_order: "Sales per Order"
+    appointment_count: "Appointment Count"
+    client_active: "Client Active"
+    gift_card_sales: "Gift Card Sales"
+
+  serviceRecords:
+    id: "ServiceRecord id"
+    external_id: "External Id"
+    name: "Service Name"
+    category_id: "Category Id"
+    category_name: "Category Name"
+    is_active: "Is Active"
+    default_price: "Default Price"
+
+  serviceSales:
+    category_name: "Service category_name"
+    name: "Service name"
+    sales: "Service Sales"
+    sales_tax: "Service Sales Tax"
+    count: "Service Count"
+    client_count: "Service Client Count"
+    sales_per_appointment: "Service Sales per Appointment"
+
+  staffPerformance:
+    role_name: "Staff role_name"
+    staff_name: "Staff Name"
+    hours_booked: "Hours Booked"
+    hours_scheduled: "Hours Scheduled"
+    utilization_percentage: "Utilization %"
+    prebooked_percentage: "Prebooked %"
+    appointment_count: "Appointment Count"
+    service_count: "Service Count"
+    service_sales: "Service Sales"
+    tip_sales: "Tip Sales"
+    gross_sales: "Gross Sales"
+    net_sales: "Net Sales"
+
+  staffRetention:
+    staff_name: "StaffRetentionExisting staff_name"
+    client_count: "Client Count"
+    thirty_day_revisit: "30-day Business Revisit (%)"
+    sixty_day_revisit: "60-day Business Revisit (%)"
+    ninety_day_revisit: "90-day Business Revisit (%)"
+
+  voucherRedemption:
+    client_name: "Client name"
+    service_name: "VoucherRedemption service_name"
+    redemptions: "Voucher Redemptions"
+    redemption_value: "Voucher Redemption Value"
+
+# Type conversions - specify data type conversions for fields
+# Complete type conversions for all entity types
+type_conversions:
+  # Patient entity
+  patient.mobile_phone: "string"
+  patient.date_of_birth:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  patient.created_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  
+  # Provider entity
+  provider.mobile_phone: "string"
+  
+  # Service entity
+  service.base_price: "float"
+  service.is_active: "boolean"
+  
+  # Package entity
+  package.gross_package_sales: "float"
+  package.net_package_sales: "float"
+  package.list_price: "float"
+  package.validity_days: "int"
+  
+  # Appointment entity
+  appointment.start_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  appointment.end_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  appointment.cancelled_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  
+  # AppointmentLine entity
+  appointmentLine.unit_price: "float"
+  appointmentLine.discount_amount: "float"
+  appointmentLine.tax_amount: "float"
+  appointmentLine.quantity: "int"
+  
+  # Payment entity
+  payment.transaction_amount: "float"
+  payment.created_on:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  
+  # PatientPackage entity
+  patientPackage.price_paid: "float"
+  patientPackage.discount_amount: "float"
+  patientPackage.services_remaining: "int"
+  patientPackage.purchase_date:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  patientPackage.expiration_date:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  
+  # OutreachMessage entity
+  outreachMessage.discount_percent: "float"
+  outreachMessage.sent_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  outreachMessage.opened_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  outreachMessage.clicked_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  
+  # RetailSale entity
+  retailSale.total_amount: "float"
+  retailSale.sale_date:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  
+  # RetailSaleLine entity
+  retailSaleLine.quantity: "int"
+  retailSaleLine.unit_price: "float"
+  retailSaleLine.discount_amount: "float"
+  retailSaleLine.tax_amount: "float"
+  
+  # Discount entity
+  discount.order_count: "int"
+  discount.discount_amount: "float"
+  
+  # DiscountOffer entity
+  discountOffer.services_count: "int"
+  discountOffer.client_count: "int"
+  discountOffer.appointment_count: "int"
+  discountOffer.discount_total: "float"
+  
+  # LocationRetention entity
+  locationRetention.client_count: "int"
+  locationRetention.thirty_day_revisit: "float"
+  locationRetention.sixty_day_revisit: "float"
+  locationRetention.ninety_day_revisit: "float"
+  
+  # MarketingAppointment entity
+  marketingAppointment.appointments_completed: "int"
+  marketingAppointment.appointments_booked: "int"
+  
+  # Membership entity
+  membership.membership_sales_tax: "float"
+  membership.gross_new_membership_sales: "float"
+  membership.gross_recurring_membership_sales: "float"
+  membership.gross_total_membership_sales: "float"
+  membership.net_new_membership_sales: "float"
+  membership.net_recurring_membership_sales: "float"
+  membership.net_total_membership_sales: "float"
+  membership.new_memberships_count: "int"
+  membership.recurring_membership_count: "int"
+  membership.total_membership_count: "int"
+  
+  # MembershipSummary entity
+  membershipSummary.starting_active_memberships: "int"
+  membershipSummary.memberships_activated: "int"
+  membershipSummary.memberships_paused: "int"
+  membershipSummary.memberships_past_due: "int"
+  membershipSummary.memberships_canceled: "int"
+  membershipSummary.memberships_scheduled_cancellation: "int"
+  membershipSummary.ending_active_memberships: "int"
+  membershipSummary.new_membership_sales: "float"
+  membershipSummary.recurring_membership_sales: "float"
+  membershipSummary.total_membership_sales: "float"
+  
+  # ReferralSource entity
+  referralSource.service_count: "int"
+  referralSource.service_sales: "float"
+  referralSource.product_quantity_sold: "int"
+  referralSource.net_retail_product_sales: "float"
+  referralSource.net_total_membership_sales: "float"
+  referralSource.net_package_sales: "float"
+  referralSource.tip_sales: "float"
+  referralSource.sales_per_order: "float"
+  
+  # SalesBreakdown entity
+  salesBreakdown.hours_scheduled: "float"
+  salesBreakdown.order_client_count: "int"
+  salesBreakdown.appointment_count: "int"
+  salesBreakdown.prebooked_percentage: "float"
+  salesBreakdown.service_count: "int"
+  salesBreakdown.service_sales: "float"
+  salesBreakdown.product_quantity_sold: "int"
+  salesBreakdown.net_retail_product_sales: "float"
+  salesBreakdown.net_total_membership_sales: "float"
+  salesBreakdown.net_package_sales: "float"
+  salesBreakdown.retail_product_sales_tax: "float"
+  salesBreakdown.package_sales_tax: "float"
+  salesBreakdown.membership_sales_tax: "float"
+  salesBreakdown.tip_sales: "float"
+  salesBreakdown.business_charges: "float"
+  salesBreakdown.sales_per_order: "float"
+  
+  # Schedule entity
+  schedule.start_on:
+    format: "datetime"
+    pattern: "%Y-%m-%d"
+  schedule.start_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  schedule.end_at:
+    format: "datetime"
+    pattern: "%Y-%m-%d %H:%M:%S"
+  
+  # ClientSales entity
+  clientSales.client_mobile: "string"
+  clientSales.gross_sales: "float"
+  clientSales.net_sales: "float"
+  clientSales.service_count: "int"
+  clientSales.service_sales: "float"
+  clientSales.net_retail_product_sales: "float"
+  clientSales.net_package_sales: "float"
+  clientSales.client_age: "int"
+  clientSales.order_count: "int"
+  clientSales.product_sales: "float"
+  clientSales.promotional_offers: "float"
+  clientSales.retail_product_count: "int"
+  clientSales.sales_per_order: "float"
+  clientSales.appointment_count: "int"
+  clientSales.gift_card_sales: "float"
+  
+  # ServiceRecords entity
+  serviceRecords.default_price: "float"
+  serviceRecords.is_active: "boolean"
+  
+  # ServiceSales entity
+  serviceSales.sales: "float"
+  serviceSales.sales_tax: "float"
+  serviceSales.count: "int"
+  serviceSales.client_count: "int"
+  serviceSales.sales_per_appointment: "float"
+  
+  # StaffPerformance entity
+  staffPerformance.hours_booked: "float"
+  staffPerformance.hours_scheduled: "float"
+  staffPerformance.utilization_percentage: "float"
+  staffPerformance.prebooked_percentage: "float"
+  staffPerformance.appointment_count: "int"
+  staffPerformance.service_count: "int"
+  staffPerformance.service_sales: "float"
+  staffPerformance.tip_sales: "float"
+  staffPerformance.gross_sales: "float"
+  staffPerformance.net_sales: "float"
+  
+  # StaffRetention entity
+  staffRetention.client_count: "int"
+  staffRetention.thirty_day_revisit: "float"
+  staffRetention.sixty_day_revisit: "float"
+  staffRetention.ninety_day_revisit: "float"
+  
+  # VoucherRedemption entity
+  voucherRedemption.redemptions: "int"
+  voucherRedemption.redemption_value: "float"

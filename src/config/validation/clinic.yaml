@@ -1,0 +1,20 @@
+# config/validation/clinic.yaml
+rules:
+  name:
+    type: "string"
+    required: true
+    nullable: false
+    min_length: 1
+    error_message: "Clinic name is required"
+  
+  source_clinic_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Source clinic ID is required"
+  
+  source_system:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Source system is required"
