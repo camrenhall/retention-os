@@ -1,0 +1,20 @@
+# config/validation/packageComponent.yaml
+rules:
+  package_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Package ID is required"
+  
+  service_id:
+    type: "string" 
+    required: true
+    nullable: false
+    error_message: "Service ID is required"
+  
+  quantity:
+    type: "integer"
+    min_value: 1
+    required: true
+    nullable: false
+    error_message: "Quantity must be a positive integer"

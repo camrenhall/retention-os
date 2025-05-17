@@ -1,0 +1,27 @@
+# Validation rules for Appointment entity
+rules:
+  patient_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Patient ID is required"
+  
+  clinic_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Clinic ID is required"
+  
+  scheduled_at:
+    type: "datetime"
+    required: true
+    nullable: false
+    error_message: "Appointment schedule time is required"
+  
+  status:
+    type: "string"
+    in_list:
+      values: ["completed", "no-show", "cancelled"]
+    required: true
+    nullable: false
+    error_message: "Status must be one of: completed, no-show, cancelled"

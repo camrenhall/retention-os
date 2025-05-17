@@ -1,0 +1,21 @@
+# config/validation/outreachMessage.yaml
+rules:
+  patient_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Patient ID is required"
+  
+  sent_at:
+    type: "datetime"
+    required: true
+    nullable: false
+    error_message: "Sent date/time is required"
+  
+  channel:
+    type: "string"
+    in_list:
+      values: ["SMS", "email", "voice"]
+    required: true
+    nullable: false
+    error_message: "Channel must be one of: SMS, email, voice"

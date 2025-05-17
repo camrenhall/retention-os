@@ -1,0 +1,21 @@
+# config/validation/payment.yaml
+rules:
+  patient_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Patient ID is required"
+  
+  amount:
+    type: "number"
+    required: true
+    nullable: false
+    error_message: "Payment amount is required"
+  
+  method:
+    type: "string"
+    in_list:
+      values: ["card", "cash", "financing", "insurance"]
+    required: true
+    nullable: false
+    error_message: "Payment method must be one of: card, cash, financing, insurance"

@@ -1,0 +1,103 @@
+# RetentionOS Data Processing Pipeline Configuration
+
+# Pipeline name and version
+name: "RetentionOS Pipeline"
+version: "1.0"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "structured"
+  output: "logs/pipeline.log"
+
+# Input/Output directories
+input_dir: "data/input"
+output_dir: "data/processed/canonical"
+
+# CRM configuration
+crm:
+  type: "boulevard"
+  config_file: "config/adapters/boulevard.yaml"
+
+# Processing configuration
+processing:
+  # Entity types to process
+  entity_types:
+    - clinic
+    - patient
+    - provider
+    - service
+    - package
+    - packageComponent
+    - appointment
+    - appointmentLine
+    - payment
+    - patientPackage
+    - outreachMessage
+    - retailSale
+    - retailSaleLine
+  
+  # Processing order
+  processing_order:
+    - clinic
+    - provider
+    - service
+    - package
+    - packageComponent
+    - patient
+    - appointment
+    - appointmentLine
+    - payment
+    - patientPackage
+    - retailSale
+    - retailSaleLine
+    - outreachMessage
+
+# Data dictionary configuration
+data_dictionary:
+  path: "data/dictionary/master_dictionary.yaml"
+  auto_update: true
+
+# Data profiler configuration
+profiler:
+  metrics:
+    - completeness
+    - uniqueness
+    - type_consistency
+    - pattern_recognition
+  sample_size: 1000
+  report_path: "data/processed/profiles/"
+
+# Data validator configuration
+validator:
+  fail_on_error: false
+  error_threshold: 0.2  # Allow up to 20% errors
+  report_path: "data/processed/validation/"
+
+# Entity resolver configuration
+resolver:
+  confidence_threshold: 0.7
+  strategies:
+    - exact_match
+    - fuzzy_name_match
+    - composite_key_match
+  report_path: "data/processed/resolution/"
+
+# Semantic enricher configuration
+enricher:
+  metrics:
+    - lifetime_value
+    - days_since_last_visit
+    - treatment_frequency
+    - preferred_provider
+    - preferred_treatment_category
+    - client_segment
+    - churn_risk
+  segment_rules: "config/enrichment/segments.yaml"
+
+# Output configuration
+output:
+  format: "json"
+  compress: false
+  path: "data/processed/canonical/"
+  include_validation_report: true

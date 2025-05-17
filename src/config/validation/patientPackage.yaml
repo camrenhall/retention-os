@@ -1,0 +1,25 @@
+# config/validation/patientPackage.yaml
+rules:
+  patient_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Patient ID is required"
+  
+  package_id:
+    type: "string"
+    required: true
+    nullable: false
+    error_message: "Package ID is required"
+  
+  purchase_date:
+    type: "datetime"
+    required: true
+    nullable: false
+    error_message: "Purchase date is required"
+  
+  expiration_date:
+    type: "datetime"
+    required: true
+    nullable: false
+    error_message: "Expiration date is required"
